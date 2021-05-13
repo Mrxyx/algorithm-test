@@ -8,6 +8,7 @@ public class Main {
         System.out.println(fib.fibV1(20));
         System.out.println(fib.fibV2(20));
         System.out.println(fib.fibV3(20));
+        System.out.println(fib.fibV4(20));
 
         //零钱兑换
         Coin coin = new Coin();
@@ -15,5 +16,8 @@ public class Main {
         System.out.println(coin.coinChangeV1(coins, 20));
         System.out.println(coin.coinChangeV2(coins, 20));
         System.out.println(coin.coinChangeV3(coins, 20));
+
+        NQueen queen = new NQueen();
+        System.out.println(queen.getQueenResult(10));
     }
 }

@@ -25,7 +25,7 @@ class Fib {
     private fun fibV2Helper(mem: Array<Int>, n: Int): Int {
         if (n == 1 || n == 2) return 1
         if (mem[n - 1] != 0) return mem[n - 1]
-        mem[n-1] = fibV2Helper(mem, n - 1) + fibV2Helper(mem, n - 2)
+        mem[n - 1] = fibV2Helper(mem, n - 1) + fibV2Helper(mem, n - 2)
         return mem[n - 1]
     }
 
@@ -40,5 +40,21 @@ class Fib {
             dp[i] = dp[i - 1] + dp[i - 2]
         }
         return dp[n]
+    }
+
+    /**
+     * 动态规划 空间复杂度O(1)
+     */
+    fun fibV4(n: Int): Int {
+        if (n == 1 || n == 2) return 1
+        var pre = 1
+        var curr = 1
+        var sum = 1
+        for (i in 3..n) {
+            sum = pre + curr
+            pre = curr
+            curr = sum
+        }
+        return sum
     }
 }
