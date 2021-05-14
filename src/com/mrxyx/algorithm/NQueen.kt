@@ -4,6 +4,7 @@ import kotlin.math.abs
 
 /**
  * n皇后
+ * https://leetcode-cn.com/problems/n-queens/
  */
 class NQueen {
 
