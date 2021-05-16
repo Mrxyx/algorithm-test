@@ -28,5 +28,10 @@ public class Main {
         int[] nums = new int[]{-1, 0, 2, 3, 4, 4, 4, 6};
         System.out.println(search.binarySearch(nums, 12));
         System.out.println(Arrays.toString(search.searchRange(nums, 4)));
+
+        //滑动窗口
+        SlidingWindow window = new SlidingWindow();
+        System.out.println(window.minWindow("ADOBECODEBANC", "ABC"));
+        System.out.println(window.checkInclusion("eidbaooo", "ab"));
     }
 }
