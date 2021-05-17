@@ -1,5 +1,8 @@
 package com.mrxyx.algorithm;
 
+import com.mrxyx.algorithm.linked.list.Reverse;
+import com.mrxyx.algorithm.model.ListNode;
+
 import java.util.Arrays;
 
 public class Main {
@@ -33,5 +36,19 @@ public class Main {
         SlidingWindow window = new SlidingWindow();
         System.out.println(window.minWindow("ADOBECODEBANC", "ABC"));
         System.out.println(window.checkInclusion("eidbaooo", "ab"));
+
+        Reverse reverse = new Reverse();
+        ListNode node = new ListNode(1);
+        ListNode node1 = new ListNode(2);
+        ListNode node2 = new ListNode(3);
+        ListNode node3 = new ListNode(4);
+        node.setNext(node1);
+        node1.setNext(node2);
+        node2.setNext(node3);
+        System.out.println(reverse.reverseAll(node));
+        System.out.println(reverse.reverseAll(node3));
+        System.out.println(reverse.reverseN(node, 2));
+        System.out.println(reverse.reverseN(node1, 2));
+        System.out.println(reverse.reverseBetween(node, 2,3));
     }
 }
