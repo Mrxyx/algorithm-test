@@ -48,4 +48,51 @@ class Reverse {
         head.next = reverseBetween(head.next, left - 1, right - 1)
         return head
     }
+
+    /**
+     * 递归反转链表
+     */
+    fun reverse(a: ListNode?): ListNode? {
+        var pre: ListNode? = null
+        var cur = a
+        var nxt: ListNode?
+        while (cur != null) {
+            nxt = cur.next
+            cur.next = pre
+            pre = cur
+            cur = nxt;
+        }
+        return pre
+    }
+
+    /**
+     * 递归反转区间[a,b)
+     */
+    fun reverse(a: ListNode?, b: ListNode?): ListNode? {
+        var pre: ListNode? = null
+        var cur = a
+        var nxt: ListNode?
+        while (cur != b) {
+            nxt = cur?.next
+            cur?.next = pre
+            pre = cur
+            cur = nxt;
+        }
+        return pre
+    }
+
+    /**
+     * k个一组反转链表
+     */
+    fun reverseKGroup(head: ListNode?, k: Int): ListNode? {
+        if (head == null) return null
+        var a = head
+        var b = head
+        for (i in 0..k) {
+            b = b?.next
+        }
+        val newHead = reverse(a, b)
+        a.next = reverseKGroup(b, k)
+        return newHead
+    }
 }
