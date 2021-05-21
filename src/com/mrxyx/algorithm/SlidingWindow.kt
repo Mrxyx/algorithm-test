@@ -64,7 +64,7 @@ class SlidingWindow {
         var valid = 0
 
         while (right < s.length) {
-            val char = s[left];
+            val char = s[left]
             right++
             if (need.containsKey(char)) {
                 window[char] = window.getOrDefault(char, 0)

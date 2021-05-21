@@ -60,7 +60,7 @@ class Reverse {
             nxt = cur.next
             cur.next = pre
             pre = cur
-            cur = nxt;
+            cur = nxt
         }
         return pre
     }
@@ -76,7 +76,7 @@ class Reverse {
             nxt = cur?.next
             cur?.next = pre
             pre = cur
-            cur = nxt;
+            cur = nxt
         }
         return pre
     }
@@ -86,13 +86,12 @@ class Reverse {
      */
     fun reverseKGroup(head: ListNode?, k: Int): ListNode? {
         if (head == null) return null
-        var a = head
         var b = head
         for (i in 0..k) {
             b = b?.next
         }
-        val newHead = reverse(a, b)
-        a.next = reverseKGroup(b, k)
+        val newHead = reverse(head, b)
+        head.next = reverseKGroup(b, k)
         return newHead
     }
 }
