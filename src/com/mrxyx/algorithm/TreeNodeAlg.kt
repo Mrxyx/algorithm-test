@@ -28,13 +28,13 @@ class TreeNodeAlg {
      */
     fun connect(root: TreeNode?): TreeNode? {
         //base case
-        if(root == null) return null
+        if (root == null) return null
         connectTwoNode(root.left, root.right)
         return root
     }
 
     private fun connectTwoNode(left: TreeNode?, right: TreeNode?) {
-        if(left == null || right == null) return
+        if (left == null || right == null) return
         /**前序遍历**/
         //连结左右节点
         left.next = right;
@@ -52,8 +52,8 @@ class TreeNodeAlg {
      * step1: 左右节点拉直
      * step2: 左节点作为根节点的右节点 原来的右节点拼接在左节点的右节点
      */
-    fun flatten(root:TreeNode?) {
-        if(root == null) return
+    fun flatten(root: TreeNode?) {
+        if (root == null) return
         //拉直左右节点
         flatten(root.left)
         flatten(root.right)
@@ -64,9 +64,34 @@ class TreeNodeAlg {
         root.left = null
         root.right = left
 
-        var p:TreeNode = root
+        var p: TreeNode = root
         while (p.right != null)
             p = p.right
         p.right = right
+    }
+
+    /**
+     * 最大二叉树
+     * https://leetcode-cn.com/problems/maximum-binary-tree/
+     */
+    fun constructMaxBinaryTree(nums: IntArray): TreeNode? {
+        return build(nums, 0, nums.size - 1)
+    }
+
+    private fun build(nums: IntArray, lo: Int, hi: Int): TreeNode? {
+        if (nums.isEmpty()) return null
+        var index = 0
+        var maxVal = Int.MIN_VALUE
+        //得到最大值index
+        for (i in lo..hi) {
+            if (nums[i] > maxVal) {
+                maxVal = nums[i]
+                index = i
+            }
+        }
+        val root = TreeNode(maxVal)
+        root.left = build(nums, lo, index - 1)
+        root.right = build(nums, index + 1, hi)
+        return root;
     }
 }
