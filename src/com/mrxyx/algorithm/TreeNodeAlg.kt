@@ -94,4 +94,60 @@ class TreeNodeAlg {
         root.right = build(nums, index + 1, hi)
         return root;
     }
+
+    /**
+     * 通过前序遍历和中序遍历构造二叉树
+     * https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+     */
+    fun buildTreeByPreIn(preorder: IntArray, inorder: IntArray): TreeNode? {
+        return buildByPI(preorder, 0, preorder.size - 1, inorder, 0, inorder.size - 1)
+    }
+
+    private fun buildByPI(preorder: IntArray, preStart: Int, preEnd: Int, inorder: IntArray, inStart: Int, inEnd: Int): TreeNode? {
+        if (preStart > preEnd) return null
+
+        val rootVal = preorder[preStart]
+
+        val root = TreeNode(rootVal)
+        var mid = 0
+        for (i in inStart..inEnd) {
+            if (inorder[i] == rootVal) {
+                mid = i
+                break
+            }
+        }
+        val leftSize = mid - inStart
+        root.left = buildByPI(preorder, preStart + 1, preStart + leftSize, inorder, inStart, mid - 1)
+        root.right = buildByPI(preorder, preStart + leftSize + 1, preEnd, inorder, mid + 1, inEnd)
+
+        return root
+    }
+
+    /**
+     * 通过后序和中序遍历结果构造二叉树
+     * https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+     */
+    fun buildTreeByInPost(inorder: IntArray, postorder: IntArray): TreeNode? {
+        return buildByIP(inorder, 0, inorder.size - 1, postorder, 0, postorder.size - 1)
+    }
+
+    private fun buildByIP(inorder: IntArray, inStart: Int, inEnd: Int, postorder: IntArray, postStart: Int, postEnd: Int): TreeNode? {
+        if (inStart > inEnd) return null
+
+        val rootVal = postorder[postEnd]
+        var mid = 0
+        for (i in inStart..inEnd) {
+            if (inorder[i] == rootVal) {
+                mid = i
+                break
+            }
+        }
+
+        val root = TreeNode(rootVal)
+        val leftSize = mid - inStart
+        root.left = buildByIP(inorder, inStart, mid - 1, postorder, postStart, postStart + leftSize - 1)
+        root.right = buildByIP(inorder, mid + 1, inEnd, postorder, postStart + leftSize, postEnd - 1)
+
+        return root
+    }
 }
