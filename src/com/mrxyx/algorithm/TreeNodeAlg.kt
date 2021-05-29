@@ -1,6 +1,8 @@
 package com.mrxyx.algorithm
 
 import com.mrxyx.algorithm.model.TreeNode
+import java.util.*
+import kotlin.collections.HashMap
 
 class TreeNodeAlg {
 
@@ -149,5 +151,35 @@ class TreeNodeAlg {
         root.right = buildByIP(inorder, mid + 1, inEnd, postorder, postStart + leftSize, postEnd - 1)
 
         return root
+    }
+
+    /**
+     * 寻找重复子树
+     * https://leetcode-cn.com/problems/find-duplicate-subtrees/
+     * step1 以我为根子树什么样
+     * step2 以其他节点为根子树什么样
+     */
+    //记录子树 及其出现的次数
+    private val memo = HashMap<String, Int>()
+    //记录重复子树根节点
+    private val res = LinkedList<TreeNode>()
+    fun findDuplicateSubtrees(root: TreeNode?): List<TreeNode> {
+        traverse(root)
+        return res
+    }
+
+    private fun traverse(root: TreeNode?): String {
+        if (root == null) return "#"
+
+        val left = traverse(root.left)
+        val right = traverse(root.right)
+
+        //后序遍历
+        val subTree = left + "," + right + "," + root.`val`
+
+        val freq = memo.getOrDefault(subTree, 0);
+        if (freq == 1) res.add(root)
+        memo[subTree] = freq + 1
+        return subTree
     }
 }
