@@ -149,4 +149,43 @@ class BinarySearchTree {
         }
         return root
     }
+
+    /**
+     * 二叉搜索树 删除子节点
+     */
+    fun deleteNode(root: TreeNode?, key: Int): TreeNode? {
+        root ?: let {
+            return null
+        }
+
+        when {
+            root.`val` == key -> {
+                //1、如果左右节点为空 则删除 一个非空 使用孩子节点替换自身
+                if (root.left == null) return root.right
+                if (root.right == null) return root.left
+                //2、寻找右节点最小子树 替换自身
+                val minNode = getMin(root.right)
+                root.`val` = minNode.`val`
+                //3、替换后 删除替换前的子节点
+                root.right = deleteNode(root.right, minNode.`val`)
+            }
+            root.`val` > key -> {
+                root.left = deleteNode(root.left, key)
+            }
+            root.`val` < key -> {
+                root.right = deleteNode(root.right, key)
+            }
+        }
+        return root
+    }
+
+    /**
+     * 获取当前树的最小子节点
+     */
+    private fun getMin(right: TreeNode): TreeNode {
+        var tmp = right
+        while (tmp.left != null)
+            tmp = tmp.left
+        return tmp
+    }
 }
