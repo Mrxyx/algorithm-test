@@ -188,4 +188,65 @@ class BinarySearchTree {
             tmp = tmp.left
         return tmp
     }
+
+    /**
+     * 不同的二叉搜索树
+     * https://leetcode-cn.com/problems/unique-binary-search-trees/
+     * 迭代
+     */
+    fun numTrees(n: Int): Int {
+        memo = Array(n + 1) { IntArray(n + 1) }
+        return count(1, n)
+    }
+
+    lateinit var memo: Array<IntArray>
+
+    private fun count(lo: Int, hi: Int): Int {
+        if (lo > hi) return 1
+        if (memo[lo][hi] != 0) return memo[lo][hi]
+        var res = 0
+        for (i in lo..hi) {
+            val left = count(lo, i - 1)
+            val right = count(i + 1, hi)
+            res += left + right
+        }
+        return res
+    }
+
+    /**
+     * 不同的二叉搜索树 II
+     * https://leetcode-cn.com/problems/unique-binary-search-trees-ii
+     */
+    fun generateTrees(n: Int): List<TreeNode?> {
+        if(n == 0) return mutableListOf()
+        return generateHelper(1, n)
+    }
+
+    private fun generateHelper(lo: Int, hi: Int): List<TreeNode?> {
+        val res = mutableListOf<TreeNode?>()
+        if (lo > hi) {
+            res.add(null)
+            return res
+        }
+        for (i in lo..hi) {
+            // 左子树
+            val leftTrees = generateHelper(lo, i - 1)
+            // 右子树
+            val rightTrees = generateHelper(i + 1, hi)
+            // 遍历左右子树，和根节点i生成一棵BST
+            for (leftTree in leftTrees) {
+                for (rightTree in rightTrees) {
+                    // 根节点
+                    val root = TreeNode(i)
+                    // 左子树
+                    root.left = leftTree
+                    // 右子树
+                    root.right = rightTree
+
+                    res.add(root)
+                }
+            }
+        }
+        return res
+    }
 }
