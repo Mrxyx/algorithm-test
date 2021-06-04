@@ -1,6 +1,7 @@
 package com.mrxyx.algorithm
 
 import com.mrxyx.algorithm.model.TreeNode
+import kotlin.math.max
 
 /**
  * 二叉搜索树
@@ -218,7 +219,7 @@ class BinarySearchTree {
      * https://leetcode-cn.com/problems/unique-binary-search-trees-ii
      */
     fun generateTrees(n: Int): List<TreeNode?> {
-        if(n == 0) return mutableListOf()
+        if (n == 0) return mutableListOf()
         return generateHelper(1, n)
     }
 
@@ -246,6 +247,43 @@ class BinarySearchTree {
                     res.add(root)
                 }
             }
+        }
+        return res
+    }
+
+    /**
+     * 二叉搜索子树的最大键值和
+     * https://leetcode-cn.com/problems/maximum-sum-bst-in-binary-tree/
+     */
+    var maxSum = 0
+    fun maxSumBST(root: TreeNode?): Int {
+        maxSumTraverse(root)
+        return maxSum
+    }
+
+    /**
+     * res[0] 记录以 root 为根的二叉树是否是 BST，若为 1 则说明是 BST，若为 0 则说明不是 BST；
+     * res[1] 记录以 root 为根的二叉树所有节点中的最小值；
+     * res[2] 记录以 root 为根的二叉树所有节点中的最大值；
+     * res[3] 记录以 root 为根的二叉树所有节点值之和。
+     */
+    private fun maxSumTraverse(root: TreeNode?): IntArray {
+        if (root == null) return intArrayOf(1, Int.MAX_VALUE, Int.MIN_VALUE, 0)
+
+        val left = maxSumTraverse(root.left)
+        val right = maxSumTraverse(root.right)
+
+        //后续遍历
+        val res = IntArray(4)
+        //以root为根的二叉树 是否是BST
+        if (left[0] == 1 && right[0] == 1 && root.`val` > left[2] && root.`val` < right[1]) {
+            res[0] = 1
+            res[1] = left[1].coerceAtMost(root.`val`)
+            res[2] = right[2].coerceAtLeast(root.`val`)
+            res[3] = left[3] + right[3] + root.`val`
+            maxSum = res[3].coerceAtLeast(maxSum)
+        } else {
+            res[0] = 0
         }
         return res
     }
