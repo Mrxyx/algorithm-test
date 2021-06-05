@@ -1,5 +1,8 @@
 package com.mrxyx.algorithm
 
+/**
+ * 二分查找
+ */
 class BinarySearch {
 
     /**

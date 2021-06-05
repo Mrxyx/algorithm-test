@@ -2,8 +2,11 @@ package com.mrxyx.algorithm
 
 import com.mrxyx.algorithm.model.TreeNode
 import java.util.*
-import kotlin.collections.HashMap
 
+
+/**
+ * 二叉树
+ */
 class TreeNodeAlg {
 
     /**
@@ -39,7 +42,7 @@ class TreeNodeAlg {
         if (left == null || right == null) return
         /**前序遍历**/
         //连结左右节点
-        left.next = right;
+        left.next = right
 
         //连接相同父节点的左右节点
         connectTwoNode(left.left, left.right)
@@ -94,7 +97,7 @@ class TreeNodeAlg {
         val root = TreeNode(maxVal)
         root.left = build(nums, lo, index - 1)
         root.right = build(nums, index + 1, hi)
-        return root;
+        return root
     }
 
     /**
@@ -161,6 +164,7 @@ class TreeNodeAlg {
      */
     //记录子树 及其出现的次数
     private val memo = HashMap<String, Int>()
+
     //记录重复子树根节点
     private val res = LinkedList<TreeNode>()
     fun findDuplicateSubtrees(root: TreeNode?): List<TreeNode> {
@@ -177,9 +181,56 @@ class TreeNodeAlg {
         //后序遍历
         val subTree = left + "," + right + "," + root.`val`
 
-        val freq = memo.getOrDefault(subTree, 0);
+        val freq = memo.getOrDefault(subTree, 0)
         if (freq == 1) res.add(root)
         memo[subTree] = freq + 1
         return subTree
+    }
+
+    /**
+     * 二叉树的序列化与反序列化
+     * https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
+     */
+    fun serializeV1(root: TreeNode?): String {
+        val sb = StringBuilder()
+        serializeHelperV1(root, sb)
+        return sb.toString()
+    }
+
+    var sep = ","
+    var n = "null"
+    private fun serializeHelperV1(root: TreeNode?, sb: StringBuilder) {
+        if (root == null) {
+            sb.append(n).append(sep)
+            return
+        }
+        /****** 前序遍历位置 ******/
+        sb.append(root.`val`).append(sep)
+        /***********************/
+
+        serializeHelperV1(root.left, sb)
+        serializeHelperV1(root.right, sb)
+    }
+
+    /* 主函数，将字符串反序列化为二叉树结构 */
+    fun deserialize(data: String): TreeNode? {
+        // 将字符串转化成列表
+        val nodes = LinkedList<String>()
+        for (s in data.split(sep).toTypedArray()) {
+            nodes.addLast(s)
+        }
+        return deserialize(nodes)
+    }
+
+    private fun deserialize(nodes: LinkedList<String>): TreeNode? {
+        if (nodes.isEmpty()) return null
+        /****** 前序遍历位置  */
+        // 列表最左侧就是根节点
+        val first = nodes.removeFirst()
+        if (first == n) return null
+        val root = TreeNode(first.toInt())
+        root.left = deserialize(nodes)
+        root.right = deserialize(nodes)
+        return root
     }
 }
