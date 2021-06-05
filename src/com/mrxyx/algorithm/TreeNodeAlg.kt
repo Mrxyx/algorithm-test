@@ -188,7 +188,7 @@ class TreeNodeAlg {
     }
 
     /**
-     * 二叉树的序列化与反序列化
+     * 二叉树的序列化
      * https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
      */
     fun serializeV1(root: TreeNode?): String {
@@ -212,7 +212,10 @@ class TreeNodeAlg {
         serializeHelperV1(root.right, sb)
     }
 
-    /* 主函数，将字符串反序列化为二叉树结构 */
+    /**
+     * 二叉树的反序列化
+     * 将字符串反序列化为二叉树结构
+     */
     fun deserialize(data: String): TreeNode? {
         // 将字符串转化成列表
         val nodes = LinkedList<String>()
