@@ -241,19 +241,19 @@ class TreeNodeAlg {
      * 二叉树的序列化
      * https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
      */
+    private var sb = StringBuilder()
     fun serializeV2(root: TreeNode?): String {
-        val sb = StringBuilder()
-        serializeHelperV2(root, sb)
+        serializeHelperV2(root)
         return sb.toString()
     }
 
-    private fun serializeHelperV2(root: TreeNode?, sb: StringBuilder) {
+    private fun serializeHelperV2(root: TreeNode?) {
         if (root == null) {
             sb.append(n).append(sep)
             return
         }
-        serializeHelperV1(root.left, sb)
-        serializeHelperV1(root.right, sb)
+        serializeHelperV2(root.left)
+        serializeHelperV2(root.right)
 
 
         /****** 后序遍历位置 ******/
@@ -267,7 +267,8 @@ class TreeNodeAlg {
      */
     fun deserializeV2(data: String): TreeNode? {
         val nodes = LinkedList<String>()
-        for (s in data.split(sep).toTypedArray()) {
+        for (s in data.split(sep)) {
+            if (s.isEmpty()) continue
             nodes.addLast(s)
         }
         return deserializeV2(nodes)
@@ -276,7 +277,10 @@ class TreeNodeAlg {
     private fun deserializeV2(nodes: LinkedList<String>): TreeNode? {
         if (nodes.isEmpty()) return null
         // 从后往前取出元素
-        val last = nodes.removeLast() ?: return null
+        val last = nodes.removeLast()
+        if (n == last) {
+            return null
+        }
         val root = TreeNode(last.toInt())
         // 限构造右子树，后构造左子树
         root.right = deserializeV2(nodes)
