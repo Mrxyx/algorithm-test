@@ -197,8 +197,8 @@ class TreeNodeAlg {
         return sb.toString()
     }
 
-    var sep = ","
-    var n = "null"
+    private var sep = ","
+    private var n = "null"
     private fun serializeHelperV1(root: TreeNode?, sb: StringBuilder) {
         if (root == null) {
             sb.append(n).append(sep)
@@ -216,24 +216,72 @@ class TreeNodeAlg {
      * 二叉树的反序列化
      * 将字符串反序列化为二叉树结构
      */
-    fun deserialize(data: String): TreeNode? {
+    fun deserializeV1(data: String): TreeNode? {
         // 将字符串转化成列表
         val nodes = LinkedList<String>()
         for (s in data.split(sep).toTypedArray()) {
             nodes.addLast(s)
         }
-        return deserialize(nodes)
+        return deserializeV1(nodes)
     }
 
-    private fun deserialize(nodes: LinkedList<String>): TreeNode? {
+    private fun deserializeV1(nodes: LinkedList<String>): TreeNode? {
         if (nodes.isEmpty()) return null
         /****** 前序遍历位置  */
         // 列表最左侧就是根节点
         val first = nodes.removeFirst()
         if (first == n) return null
         val root = TreeNode(first.toInt())
-        root.left = deserialize(nodes)
-        root.right = deserialize(nodes)
+        root.left = deserializeV1(nodes)
+        root.right = deserializeV1(nodes)
         return root
     }
+
+    /**
+     * 二叉树的序列化
+     * https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
+     */
+    fun serializeV2(root: TreeNode?): String {
+        val sb = StringBuilder()
+        serializeHelperV2(root, sb)
+        return sb.toString()
+    }
+
+    private fun serializeHelperV2(root: TreeNode?, sb: StringBuilder) {
+        if (root == null) {
+            sb.append(n).append(sep)
+            return
+        }
+        serializeHelperV1(root.left, sb)
+        serializeHelperV1(root.right, sb)
+
+
+        /****** 后序遍历位置 ******/
+        sb.append(root.`val`).append(sep)
+        /***********************/
+    }
+
+    /**
+     * 二叉树的反序列化
+     * 将字符串反序列化为二叉树结构
+     */
+    fun deserializeV2(data: String): TreeNode? {
+        val nodes = LinkedList<String>()
+        for (s in data.split(sep).toTypedArray()) {
+            nodes.addLast(s)
+        }
+        return deserializeV2(nodes)
+    }
+
+    private fun deserializeV2(nodes: LinkedList<String>): TreeNode? {
+        if (nodes.isEmpty()) return null
+        // 从后往前取出元素
+        val last = nodes.removeLast() ?: return null
+        val root = TreeNode(last.toInt())
+        // 限构造右子树，后构造左子树
+        root.right = deserializeV2(nodes)
+        root.left = deserializeV2(nodes)
+        return root
+    }
+
 }
