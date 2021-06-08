@@ -188,7 +188,7 @@ class TreeNodeAlg {
     }
 
     /**
-     * 二叉树的序列化
+     * 二叉树的序列化 前序遍历
      * https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
      */
     fun serializeV1(root: TreeNode?): String {
@@ -213,7 +213,7 @@ class TreeNodeAlg {
     }
 
     /**
-     * 二叉树的反序列化
+     * 二叉树的反序列化 前序遍历
      * 将字符串反序列化为二叉树结构
      */
     fun deserializeV1(data: String): TreeNode? {
@@ -238,7 +238,7 @@ class TreeNodeAlg {
     }
 
     /**
-     * 二叉树的序列化
+     * 二叉树的序列化 后序遍历
      * https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
      */
     private var sb = StringBuilder()
@@ -262,7 +262,7 @@ class TreeNodeAlg {
     }
 
     /**
-     * 二叉树的反序列化
+     * 二叉树的反序列化 后序遍历
      * 将字符串反序列化为二叉树结构
      */
     fun deserializeV2(data: String): TreeNode? {
@@ -285,6 +285,64 @@ class TreeNodeAlg {
         // 限构造右子树，后构造左子树
         root.right = deserializeV2(nodes)
         root.left = deserializeV2(nodes)
+        return root
+    }
+
+    /**
+     * 二叉树的序列化 层级遍历
+     * https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
+     */
+    fun serializeV3(root: TreeNode?): String {
+        if (root == null) return ""
+        val sb = StringBuilder()
+        val q = LinkedList<TreeNode>()
+        q.offer(root)
+        while (!q.isEmpty()) {
+            val cur = q.poll()
+            if (cur == null) {
+                sb.append(n).append(sep)
+                continue
+            }
+            sb.append(cur.`val`).append(sep)
+            q.offer(cur.left)
+            q.offer(cur.right)
+        }
+        return sb.toString()
+    }
+
+    /**
+     * 二叉树的反序列化 层级遍历
+     * 将字符串反序列化为二叉树结构
+     */
+    fun deserializeV3(data: String): TreeNode? {
+        if (data.isEmpty()) return null
+        val nodes = data.split(sep)
+        val root = TreeNode(nodes[0].toInt())
+        val q = LinkedList<TreeNode>()
+        q.offer(root)
+        var i = 1
+        while (i < nodes.size) {
+            // 队列中存的都是父节点
+            val parent = q.poll()
+            // 父节点对应的左侧子节点的值
+            val left = nodes[i++]
+            if (left.isEmpty()) continue
+            if (left != n) {
+                parent.left = TreeNode(left.toInt())
+                q.offer(parent.left)
+            } else {
+                parent.left = null
+            }
+            // 父节点对应的右侧子节点的值
+            val right = nodes[i++]
+            if (right.isEmpty()) continue
+            if (right != n) {
+                parent.right = TreeNode(right.toInt())
+                q.offer(parent.right)
+            } else {
+                parent.right = null
+            }
+        }
         return root
     }
 
