@@ -346,4 +346,24 @@ class TreeNodeAlg {
         return root
     }
 
+    /**
+     * 二叉树的最近公共祖先
+     * https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/
+     */
+    fun lowestCommonAncestor(root: TreeNode?, p: TreeNode, q: TreeNode): TreeNode? {
+        // base case
+        if (root == null) return null
+        if (root === p || root === q) return root
+        val left = lowestCommonAncestor(root.left, p, q)
+        val right = lowestCommonAncestor(root.right, p, q)
+        // 情况 1
+        if (left != null && right != null) {
+            return root
+        }
+        // 情况 2
+        return if (left == null && right == null) {
+            null
+        } else left ?: right
+        // 情况 3
+    }
 }
