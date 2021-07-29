@@ -3,7 +3,7 @@ package com.mrxyx.algorithm
 /**
  * 数组
  */
-class Array {
+class ArrayAlg {
 
     /**
      * 吃香蕉
